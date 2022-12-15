@@ -29,7 +29,7 @@ function App() {
       name,
       price
     };
-    // fazer a requisicao
+    // 2 - Fazer a requisicao
 
     const res = await fetch(url, {
       method:"POST",
@@ -38,6 +38,17 @@ function App() {
       },
       body:JSON.stringify(product),
     });
+
+    // 3 - Carregamento dinamico
+
+    const addProduct= await res.json()
+
+    setProducts((prevProduct)=> [...prevProduct,addProduct])
+    
+    // limpar o input depois de fazer a submissão
+
+    setName("");
+    setPrice("");
   };
 
   return (
