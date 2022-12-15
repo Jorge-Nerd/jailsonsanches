@@ -22,14 +22,22 @@ function App() {
     fetchData();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     const product={
       name,
       price
-    }
-    console.log(product)
+    };
+    // fazer a requisicao
+
+    const res = await fetch(url, {
+      method:"POST",
+      headers:{
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify(product),
+    });
   };
 
   return (
