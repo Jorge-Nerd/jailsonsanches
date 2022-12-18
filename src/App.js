@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+// Import 4 - Custom Hook
+import { useFetch } from "./Hooks/useFetch";
+
+
 const url = "http://localhost:3000/products";
+
+
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -10,42 +16,47 @@ function App() {
 
   const [price, setPrice] = useState("");
 
-  useEffect(() => {
-    async function fetchData() {
-      const res = await fetch(url); // recebe os dados da api do url
+  const { data:items,httpConfig } = useFetch(url); // importando o data dentro do useFetch
+ //    Renomeando os dados de items
 
-      const data = await res.json(); // transforma os dados em json
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const res = await fetch(url); // recebe os dados da api do url
 
-      setProducts(data); // coloca nos produtos os dados
-    }
+  //     const data = await res.json(); // transforma os dados em json
 
-    fetchData();
-  }, []);
+  //     setProducts(data); // coloca nos produtos os dados
+  //   }
+
+  //   fetchData();
+  // }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const product={
+    const product = {
       name,
-      price
+      price,
     };
     // 2 - Fazer a requisicao
 
-    const res = await fetch(url, {
-      method:"POST",
-      headers:{
-        "Content-Type": "application/json",
-      },
-      body:JSON.stringify(product),
-    });
+    // const res = await fetch(url, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(product),
+    // });
 
-    // 3 - Carregamento dinamico
+    // // 3 - Carregamento dinamico
 
-    const addProduct= await res.json()
+    // const addProduct = await res.json();
 
-    setProducts((prevProduct)=> [...prevProduct,addProduct])
-    
+    // setProducts((prevProduct) => [...prevProduct, addProduct]);
+
     // limpar o input depois de fazer a submissão
+
+    httpConfig(product, "POST")
 
     setName("");
     setPrice("");
@@ -55,8 +66,12 @@ function App() {
     <div className="App">
       <h1>Lista de produtos</h1>
       <ul>
-        {products.map((ele, i) => (
-          <li key={ele.id}> {ele.name} :  ${ele.price}</li>
+        {/* Quando os items forem preenchidos utilizar o map */}
+        {items && items.map((ele, i) => (
+          <li key={ele.id}>
+            {" "}
+            {ele.name} : ${ele.price}
+          </li>
         ))}
       </ul>
       <div className="add-product">
@@ -76,10 +91,10 @@ function App() {
               type="number"
               id="number"
               value={price}
-              onChange={(e)=> setPrice(e.target.value)}
+              onChange={(e) => setPrice(e.target.value)}
             />
           </label>
-          <input type="submit" value="create"/>
+          <input type="submit" value="create" />
         </form>
       </div>
     </div>

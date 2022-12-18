@@ -156,6 +156,21 @@
       "name": "Edu",
       "price": "49",
       "id": 33
+    },
+    {
+      "name": "Familia",
+      "price": "20",
+      "id": 34
+    },
+    {
+      "name": "Jail",
+      "price": "4",
+      "id": 35
+    },
+    {
+      "name": "gug",
+      "price": "55",
+      "id": 36
     }
   ]
 }
